@@ -1,38 +1,47 @@
 # tableau-server-beta-docker
+
 Dockerfile for Tableau Server on Linux - Single Node. 
 
-## Build
+It's a fork from [tfoldi/tableau-server-docker](https://github.com/tfoldi/tableau-server-docker)
+because it doesn't worked for me. The issue was [in line 23](https://github.com/tfoldi/tableau-server-docker/blob/master/Dockerfile#L23)
+and I got this error message
+
+> To run a Tableau Server on Linux, you must use a distro running with systemd. For details on supported distros, see:
+> http://onlinehelp.tableau.com/current/serverlinux/en-us/confirm_requirements.htm
+
+## Build the enviroment
    
-Be sure that your `EDITOR` environment variable is set then simply call `make`:
+Just run
 
-    make
+```
+docker build -t vando/tableau-server:env . 
+```
     
-## Run image
+## Build the image
 
-To boot (run) Tableau Server container simply execute:
+1. Run the docker image
 
-    make run
+```
+docker run -it --name tableau --privileged -v /sys/fs/cgroup:/sys/fs/cgroup -v /run -p 80:8080 vando/tableau-server:env
+```
 
-It will call a `systemd` `/sbin/init` on the image and configure, register and start tableau server
-on the first start.
+2. Connect to container
 
-To connect from a different terminal to the server itself use
+```
+docker exec -it tableau bash
+```
 
-    make exec
-    
-Pro tipp: If you commit the image state after the first execution (tableau configuration and registration) you don't
-have to wait minutes next time.
-    
-## Author
+3. Run the script
 
-These ten lines of code done by me, [@tfoldi](https://twitter.com/tfoldi)
+```
+bash /root/tableau.install
+```
 
+4. Logout from container and run
 
-## Install Demo
-[Console Video](https://asciinema.org/a/oJ7tTN0URdtF9UqpCRRGJzKvT/embed?)
-    
-## Blog from tfoldi
-[Blog](https://databoss.starschema.net/tableau-server-linux-docker-container/)
+```
+docker commit tableau vando/tableau-server:latest
+```
 
 ## Tableau docs
 
@@ -41,3 +50,4 @@ These ten lines of code done by me, [@tfoldi](https://twitter.com/tfoldi)
 - [Whitepaper Tableau for the enterprise](https://www.tableau.com/sites/default/files/whitepapers/whitepaper_tableau-for-the-enterprise_0.pdf)
 
 - [Online Help](http://onlinehelp.tableau.com/v10.5/pro/desktop/en-us/help.htm)
+
