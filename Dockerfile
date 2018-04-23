@@ -19,6 +19,8 @@ RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.
 
 COPY config/* /opt/tableau/docker_build/
 
+RUN echo 'bash /opt/tableau/docker_build/tableau.install' >> /etc/rc.local
+
 # Expose TSM and Gateway ports
 EXPOSE 80 8850
 

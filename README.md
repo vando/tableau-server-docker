@@ -25,19 +25,9 @@ docker build -t vando/tableau-server:env .
 docker run -it --name tableau --privileged -v /sys/fs/cgroup:/sys/fs/cgroup -v /run -p 80:8080 vando/tableau-server:env
 ```
 
-2. Connect to container
+2. Go for a coffee.
 
-```
-docker exec -it tableau bash
-```
-
-3. Run the script
-
-```
-bash /opt/tableau/docker_build/tableau.install
-```
-
-4. Logout from container and run
+3. Finally, after the message "Tableau server is installed", run
 
 ```
 docker commit tableau vando/tableau-server:latest
