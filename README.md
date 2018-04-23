@@ -34,7 +34,7 @@ docker exec -it tableau bash
 3. Run the script
 
 ```
-bash /root/tableau.install
+bash /opt/tableau/docker_build/tableau.install
 ```
 
 4. Logout from container and run

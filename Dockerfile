@@ -18,10 +18,6 @@ RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.
     mkdir -p  /run/systemd/system /opt/tableau/docker_build
 
 COPY config/* /opt/tableau/docker_build/
-COPY tableau.install /root/
-
-RUN mkdir -p /etc/systemd/system/ && \
-    cp /opt/tableau/docker_build/tableau_server_install.service /etc/systemd/system/
 
 # Expose TSM and Gateway ports
 EXPOSE 80 8850
