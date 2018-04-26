@@ -22,7 +22,7 @@ docker build -t vando/tableau-server:env .
 1. Run the docker image
 
 ```
-docker run -it --name tableau --privileged -v /sys/fs/cgroup:/sys/fs/cgroup -v /run -p 80:8080 vando/tableau-server:env
+docker run -it --name tableau --privileged -v /sys/fs/cgroup:/sys/fs/cgroup -v /run -p 80 vando/tableau-server:env
 ```
 
 2. Go for a coffee.

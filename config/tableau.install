@@ -1,48 +1,46 @@
 #!/bin/bash
 
-if [ ! -f /opt/tableau/docker_build/.init-done ]
-then
-    yum install -y \
-        https://downloads.tableau.com/esdalt/10.5.2/tableau-server-10-5-2.x86_64.rpm \
-        https://downloads.tableau.com/drivers/linux/yum/tableau-driver/tableau-postgresql-odbc-9.5.3-1.x86_64.rpm || exit 1
-    
-    echo "Initalize tsm..."
-    su tsm -c "sudo sh /opt/tableau/tableau_server/packages/scripts.*/initialize-tsm -f --accepteula" || exit 1
-    
-    source /etc/profile.d/tableau_server.sh
-    
-    echo "Login tsm..."
-    su tsm -c "sudo /opt/tableau/tableau_server/packages/customer-bin.${TABLEAU_SERVER_DATA_DIR_VERSION}/tsm login --username tsm --password tsm"
-    echo "Done."
-    
-    echo "Activate licenses..."
-    su tsm -c "sudo /opt/tableau/tableau_server/packages/customer-bin.${TABLEAU_SERVER_DATA_DIR_VERSION}/tsm licenses activate -t" || exit 1
-    
-    echo "Register..."
-    su tsm -c "sudo /opt/tableau/tableau_server/packages/customer-bin.${TABLEAU_SERVER_DATA_DIR_VERSION}/tsm register --file /opt/tableau/docker_build/registration_file.json" || exit 1
-    
-    echo "Settings import..."
-    su tsm -c "sudo /opt/tableau/tableau_server/packages/customer-bin.${TABLEAU_SERVER_DATA_DIR_VERSION}/tsm settings import -f /opt/tableau/docker_build/tableau_config.json"
-    echo "Done."
-    
-    echo "Pending-changes apply..."
-    su tsm -c "sudo /opt/tableau/tableau_server/packages/customer-bin.${TABLEAU_SERVER_DATA_DIR_VERSION}/tsm pending-changes apply --restart" || exit 1
-    
-    echo "Initalize server..."
-    su tsm -c "sudo /opt/tableau/tableau_server/packages/customer-bin.${TABLEAU_SERVER_DATA_DIR_VERSION}/tsm initialize --start-server --request-timeout 1800" || exit 1
-    
-    echo "Initalize user..."
-    su tsm -c "sudo /opt/tableau/tableau_server/packages/bin.${TABLEAU_SERVER_DATA_DIR_VERSION}/tabcmd initialuser --server localhost:80 --username admin --password admin"
-    
-    touch /opt/tableau/docker_build/.init-done
+yum install -y \
+    https://downloads.tableau.com/esdalt/10.5.2/tableau-server-10-5-2.x86_64.rpm \
+    https://downloads.tableau.com/drivers/linux/yum/tableau-driver/tableau-postgresql-odbc-9.5.3-1.x86_64.rpm || exit 1
 
-    echo ""
-    echo ""
-    echo "+-----------------------------+"
-    echo "|                             |"
-    echo "| Tableau server is installed |"
-    echo "|                             |"
-    echo "+-----------------------------+"
-fi
-    
+echo "Initalize tsm..."
+su tsm -c "sudo sh /opt/tableau/tableau_server/packages/scripts.*/initialize-tsm -f --accepteula" || exit 1
+
+source /etc/profile.d/tableau_server.sh
+
+echo "Login tsm..."
+su tsm -c "sudo /opt/tableau/tableau_server/packages/customer-bin.${TABLEAU_SERVER_DATA_DIR_VERSION}/tsm login --username tsm --password tsm"
+echo "Done."
+
+echo "Activate licenses..."
+su tsm -c "sudo /opt/tableau/tableau_server/packages/customer-bin.${TABLEAU_SERVER_DATA_DIR_VERSION}/tsm licenses activate -t" || exit 1
+
+echo "Register..."
+su tsm -c "sudo /opt/tableau/tableau_server/packages/customer-bin.${TABLEAU_SERVER_DATA_DIR_VERSION}/tsm register --file /opt/tableau/docker_build/registration_file.json" || exit 1
+
+echo "Settings import..."
+su tsm -c "sudo /opt/tableau/tableau_server/packages/customer-bin.${TABLEAU_SERVER_DATA_DIR_VERSION}/tsm settings import -f /opt/tableau/docker_build/tableau_config.json"
+echo "Done."
+
+echo "Pending-changes apply..."
+su tsm -c "sudo /opt/tableau/tableau_server/packages/customer-bin.${TABLEAU_SERVER_DATA_DIR_VERSION}/tsm pending-changes apply --restart" || exit 1
+
+echo "Initalize server..."
+su tsm -c "sudo /opt/tableau/tableau_server/packages/customer-bin.${TABLEAU_SERVER_DATA_DIR_VERSION}/tsm initialize --start-server --request-timeout 1800" || exit 1
+
+echo "Initalize user..."
+su tsm -c "sudo /opt/tableau/tableau_server/packages/bin.${TABLEAU_SERVER_DATA_DIR_VERSION}/tabcmd initialuser --server localhost:80 --username admin --password admin"
+
+touch /opt/tableau/docker_build/.init-done
+
+echo ""
+echo ""
+echo "+-----------------------------+"
+echo "|                             |"
+echo "| Tableau server is installed |"
+echo "|                             |"
+echo "+-----------------------------+"
+
+
 # vim: syntax=sh
