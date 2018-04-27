@@ -21,7 +21,7 @@ COPY config/* /opt/tableau/docker_build/
 
 RUN mkdir -p /etc/systemd/system/ && \
     cp /opt/tableau/docker_build/tableau-server-install.service /etc/systemd/system/ && \
-    systemctl enable tableaur-server-install
+    systemctl enable tableau-server-install
 RUN chmod +x /opt/tableau/docker_build/tableau.install
 
 # Expose TSM and Gateway ports
